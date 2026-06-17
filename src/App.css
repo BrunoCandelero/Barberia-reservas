@@ -1,0 +1,18 @@
+/* src/App.css */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+@import "./estilos/AppGlobal.css";
+@import "./estilos/ViewCliente.css";
+@import "./estilos/Navbar.css";
+@import "./estilos/ViewLogin.css";
+@import "./estilos/ViewAdmin.css";
+
+:root {
+  --bg-app: #0c0c0e;
+  --bg-card: #161619;
+  --bg-input: #1e1e23;
+  --accent: #f59e0b;
+  --border-color: #2a2a30;
+  --text-primary: #f4f4f5;
+  --text-secondary: #a1a1aa;
+}

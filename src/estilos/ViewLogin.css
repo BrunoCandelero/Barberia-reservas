@@ -1,0 +1,112 @@
+/* Contenedor del Login que centra la tarjeta en toda la pantalla */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #121212;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+}
+
+/* Tarjeta del Formulario */
+.login-card {
+  background-color: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  padding: 40px 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
+
+.login-card h2 {
+  margin: 0 0 8px 0;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.login-card p {
+  color: #888888;
+  font-size: 14px;
+  margin: 0 0 24px 0;
+}
+
+/* Grupos de Input */
+.input-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  color: #cccccc;
+  font-size: 13px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.input-group input {
+  width: 100%;
+  background-color: #222222;
+  border: 1px solid #3a3a3a;
+  padding: 12px;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #ff9800;
+  background-color: #262626;
+}
+
+/* Mensaje de Error */
+.error-message {
+  color: #e74c3c;
+  background-color: rgba(231, 76, 60, 0.1);
+  border: 1px solid rgba(231, 76, 60, 0.2);
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+/* Botón de Ingresar */
+.btn-login {
+  width: 100%;
+  background-color: #ff9800;
+  color: #000000;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-bottom: 12px;
+}
+
+.btn-login:hover {
+  background-color: #e68a00;
+}
+
+/* Botón Volver */
+.btn-volver {
+  background: none;
+  border: none;
+  color: #888888;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.btn-volver:hover {
+  color: #ffffff;
+}
