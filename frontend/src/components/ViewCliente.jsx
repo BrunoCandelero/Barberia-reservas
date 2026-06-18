@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { supabase } from '../Backend/supabaseClient';
+import { supabase } from '@backend/supabaseClient';
 import CalendarSelector from './CalendarSelector';
 import ServiceSelector from './ServiceSelector';
 import StepIndicator from './StepIndicator';
