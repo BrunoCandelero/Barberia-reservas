@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../Backend/supabaseClient';
 import CalendarSelector from './CalendarSelector';
 import ServiceSelector from './ServiceSelector';
 

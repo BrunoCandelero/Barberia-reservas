@@ -3,7 +3,7 @@ import ViewCliente from './components/ViewCliente';
 import { ViewLogin } from './components/ViewLogin';
 import { ViewAdmin } from './components/ViewAdmin';
 import { Navbar } from './components/Navbar';
-import { supabase } from './supabaseClient';
+import { supabase } from './Backend/supabaseClient';
 import './App.css';
 
 const ADMIN_EMAIL = 'admin@thegentsbarber.com';

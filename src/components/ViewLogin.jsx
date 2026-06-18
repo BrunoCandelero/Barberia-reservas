@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../Backend/supabaseClient';
 import '../estilos/ViewLogin.css';
 
 export const ViewLogin = ({ onLoginSuccess, onVolver }) => {
