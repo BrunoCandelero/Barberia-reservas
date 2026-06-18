@@ -1,32 +1,36 @@
-import React, { useState } from 'react';
-import '../estilos/Navbar.css'; 
+import { useState } from 'react';
+import '../estilos/Navbar.css';
 
-export const Navbar = ({ onIrALogin }) => {
+export const Navbar = ({ session, onIrALogin, onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggle = () => setIsOpen(!isOpen);
+  const close = () => setIsOpen(false);
+
+  const nombre = session?.user?.user_metadata?.nombre || session?.user?.email?.split('@')[0] || 'Usuario';
 
   return (
     <>
-      {/* Botón de 3 líneas flotante arriba a la derecha */}
-      <button className="hamburger-btn" onClick={toggleMenu} title="Menú de Administración">
+      <button className="hamburger-btn" onClick={toggle} title="Menú">
         {isOpen ? '✕' : '☰'}
       </button>
 
-      {/* Menú desplegable */}
       <div className={`admin-dropdown-menu ${isOpen ? 'active' : ''}`}>
-        <h4>Gestión Interna</h4>
-        <button 
-          className="btn-menu-login" 
-          onClick={() => {
-            onIrALogin(); // Cambia el estado de la vista en App.jsx
-            setIsOpen(false); // Cierra el menú desplegable
-          }}
-        >
-          🔒 Ingreso Admin
-        </button>
+        {session ? (
+          <>
+            <p className="navbar-greeting">Hola, <strong>{nombre}</strong></p>
+            <button className="btn-menu-login" onClick={() => { onLogout(); close(); }}>
+              Cerrar sesión
+            </button>
+          </>
+        ) : (
+          <>
+            <h4>Gestión de cuenta</h4>
+            <button className="btn-menu-login" onClick={() => { onIrALogin(); close(); }}>
+              Iniciar sesión / Registro
+            </button>
+          </>
+        )}
       </div>
     </>
   );

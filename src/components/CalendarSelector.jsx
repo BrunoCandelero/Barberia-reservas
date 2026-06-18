@@ -1,20 +1,25 @@
 import { useState } from 'react';
 
-export default function CalendarSelector({ selectedDate, setSelectedDate, selectedTime, setSelectedTime, turnosOcupados = [] }) {
+export default function CalendarSelector({ selectedDate, setSelectedDate, selectedTime, setSelectedTime, turnosPorFecha = {} }) {
   const [offset, setOffset] = useState(0);
 
   const generarDiasPaginados = (baseOffset) => {
     const diasComerciales = [];
     let contador = baseOffset;
-    
+
     while (diasComerciales.length < 5) {
-      const fechaAux = new Date(); 
+      const fechaAux = new Date();
       fechaAux.setDate(fechaAux.getDate() + contador);
-      
+
       const numeroDiaSemana = fechaAux.getDay();
-      
-      // Saltamos los domingos (0) para la barbería
+
       if (numeroDiaSemana !== 0) {
+        const año = fechaAux.getFullYear();
+        const mes = fechaAux.getMonth();
+        const dia = fechaAux.getDate();
+
+        const isoDate = `${año}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+
         const nombreMes = fechaAux.toLocaleString('es-ES', { month: 'long' });
         const mesCapitalizado = nombreMes.charAt(0).toUpperCase() + nombreMes.slice(1);
 
@@ -25,11 +30,12 @@ export default function CalendarSelector({ selectedDate, setSelectedDate, select
         const diaLargoCapitalizado = nombreDiaLargo.charAt(0).toUpperCase() + nombreDiaLargo.slice(1);
 
         diasComerciales.push({
-          dayNameShort: shortName, 
+          isoDate,
+          dayNameShort: shortName,
           dayNameLong: diaLargoCapitalizado,
-          num: fechaAux.getDate().toString(),
+          num: String(dia),
           mes: mesCapitalizado,
-          año: fechaAux.getFullYear()
+          año
         });
       }
       contador++;
@@ -44,9 +50,8 @@ export default function CalendarSelector({ selectedDate, setSelectedDate, select
   ];
 
   const mesActualHeader = availableDays[0]?.mes || "";
-  const añoActualHeader = availableDays[0]?.año || "2026";
+  const añoActualHeader = availableDays[0]?.año || new Date().getFullYear();
 
-  // 🚀 Control de navegación extendido a 90 días para permitir reservas a largo plazo
   const handleNext = () => { if (offset < 90) setOffset(offset + 5); };
   const handlePrev = () => { if (offset > 0) setOffset(offset - 5); };
 
@@ -58,45 +63,39 @@ export default function CalendarSelector({ selectedDate, setSelectedDate, select
           <span className="month-icon">📅</span>
           <span className="month-name">{mesActualHeader} {añoActualHeader}</span>
         </div>
-        {/* Deshabilitamos la flecha recién cuando llega al límite de 90 días */}
         <button type="button" className="nav-arrow-btn" onClick={handleNext} disabled={offset >= 90}>→</button>
       </div>
 
       <h3>1. Seleccioná el día</h3>
       <div className="days-container">
-        {availableDays.map((d, index) => {
-          const dateStr = `${d.dayNameLong} ${d.num} de ${d.mes}`;
-          return (
-            <button
-              type="button"
-              key={index}
-              onClick={() => {
-                setSelectedDate(dateStr);
-                setSelectedTime(null); 
-              }}
-              className={`day-btn ${selectedDate === dateStr ? 'selected' : ''}`}
-            >
-              <span className="day-name-text">{d.dayNameShort}</span>
-              <span className="day-num-text">{d.num}</span>
-              {/* Indicador premium: si el día cambia de mes, avisa visualmente cuál es */}
-              {d.mes !== mesActualHeader && (
-                <span className="next-month-indicator" style={{ fontSize: '0.65rem', color: 'var(--accent)' }}>
-                  {d.mes.substring(0,3)}
-                </span>
-              )}
-            </button>
-          );
-        })}
+        {availableDays.map((d) => (
+          <button
+            type="button"
+            key={d.isoDate}
+            onClick={() => {
+              setSelectedDate(d.isoDate);
+              setSelectedTime(null);
+            }}
+            className={`day-btn ${selectedDate === d.isoDate ? 'selected' : ''}`}
+          >
+            <span className="day-name-text">{d.dayNameShort}</span>
+            <span className="day-num-text">{d.num}</span>
+            {d.mes !== mesActualHeader && (
+              <span className="next-month-indicator" style={{ fontSize: '0.65rem', color: 'var(--accent)' }}>
+                {d.mes.substring(0, 3)}
+              </span>
+            )}
+          </button>
+        ))}
       </div>
 
       {selectedDate && (
         <div className="hours-section animate-input">
-          <h3>2. Horarios libres para el {selectedDate}</h3>
+          <h3>2. Horarios disponibles</h3>
           <div className="hours-grid">
             {availableHours.map((time) => {
-              const estaOcupado = turnosOcupados.some(
-                (t) => t.fecha === selectedDate && t.hora === time && t.estado === 'ocupado'
-              );
+              const turnoDelSlot = turnosPorFecha[selectedDate]?.find(t => t.hora === time);
+              const estaOcupado = turnoDelSlot?.estado === 'ocupado';
               const estaSeleccionado = selectedTime === time;
 
               return (
@@ -107,7 +106,7 @@ export default function CalendarSelector({ selectedDate, setSelectedDate, select
                   disabled={estaOcupado}
                   onClick={() => !estaOcupado && setSelectedTime(time)}
                 >
-                  {time} hs
+                  {estaOcupado ? <span className="slot-booked-label">RESERVADO</span> : `${time} hs`}
                 </button>
               );
             })}
